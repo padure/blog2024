@@ -12,37 +12,13 @@ use Spatie\Permission\Models\Role;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * List of applications to add.
-     */
-    private $permissions = [
-        'role-list',
-        'role-create',
-        'role-edit',
-        'role-delete'
-    ];
-
-    /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        foreach ($this->permissions as $permission) {
-            Permission::create(['name' => $permission]);
-        }
-
-        // Create admin User and assign the role to him.
-        $user = User::create([
-            'name' => 'Padure Gheorghe',
-            'email' => 'admin@admin.com',
-            'password' => Hash::make('Secret2024')
+        $this->call([
+            UserSeeder::class,
+            AdminSeeder::class
         ]);
-
-        $role = Role::create(['name' => 'Admin']);
-
-        $permissions = Permission::pluck('id', 'id')->all();
-
-        $role->syncPermissions($permissions);
-
-        $user->assignRole([$role->id]);
     }
 }
